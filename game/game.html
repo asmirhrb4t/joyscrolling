@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Canvas Example</title>
+  <script type="text/javascript">
+//import Math
+
+const ball = {
+  x: 100,
+  y: 100,
+  dx: 30,
+  dy: (Math.round(Math.random()) * 2 - 1) * 10,
+  width: 20,
+  height: 20,
+  background: 'blue',
+}
+
+const dash_left = {
+  x: 100,
+  y: 100,
+  dx: 5,
+  dy: -1,
+  width: 20,
+  height: 100,
+  background: 'green',
+}
+
+const dash_right = {
+  x: 700,
+  y: 200,
+  dx: 5,
+  dy: -1,
+  width: 20,
+  height: 100,
+  background: 'green',
+}
+
+const onmousedown = (event) => {
+  document.getElementById("info").innerHTML = `clicked on ${event.clientX} / ${event.clientY}`;
+}
+const onkeydown = (event) => {
+  document.getElementById("info").innerHTML = `pressed key ${event.keyCode}`;
+  if (event.keyCode == 38)
+  dash_right.y -= 20;
+  if (event.keyCode == 40)
+  dash_right.y += 20;
+  if (event.keyCode == 87)
+  dash_left.y -= 20;
+  if (event.keyCode == 83)
+  dash_left.y += 20;
+}
+
+
+const draw = () => {
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d", {alpha: false}); // 2d context for painting
+
+  // canvas background fill color
+  ctx.fillStyle = "lightyellow";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // ball
+  ctx.fillStyle = ball.background;
+  ctx.fillRect(ball.x, ball.y, ball.width, ball.height);
+
+    // left dash
+  ctx.fillStyle = dash_left.background;
+  ctx.fillRect(dash_left.x, dash_left.y, dash_left.width, dash_left.height);
+
+    // left dash
+  ctx.fillStyle = dash_right.background;
+  ctx.fillRect(dash_right.x, dash_right.y, dash_right.width, dash_right.height);
+/*
+  // green square without fill color
+  ctx.beginPath();
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = square.color;
+  ctx.rect(square.x, square.y, square.width, square.height);
+  ctx.stroke()
+
+  drawLine( ctx, [100, 100], [100, 200], '#eee', 10);
+  drawLine( ctx, [700, 140], [700, 240], '#eee', 10);
+*/
+
+  // move squares
+  ball.x = ball.x + ball.dx;
+  ball.y = ball.y + (Math.round(Math.random()) * 2 - 1) * ball.dy;
+/*
+  if ( ball.x >= 700-ball.width || ball.x <= 100+ball.width ) {
+    ball.dx = -ball.dx;
+  }
+*/
+  if (
+  ball.x + ball.dx <= dash_left.x+dash_left.width &&
+  //ball.x + ball.dx > dash_left.x + dash_left.width &&
+  (ball.y >= dash_left.y && ball.y <= dash_left.y+dash_left.height)
+  ) {
+  ball.dx =-ball.dx;
+
+    console.log('first if')
+  }
+
+  if (
+  ball.x + ball.width >= dash_right.x &&
+  ball.x + ball.width - ball.dx < dash_right.x &&
+  (ball.y >= dash_right.y && ball.y <= dash_right.y+dash_right.height)
+  ) {
+    ball.dx =-ball.dx;
+    //clearInterval(draw);
+    //ctx.font = "100px Arial";
+    //ctx.fillText("GAME OVER",200,300);
+    console.log('second if')
+  }
+
+  if ( ball.x <= canvas.x) {
+  console.log('game over')}
+
+}
+
+// drawLine(ctx, [x1, y1], [x2, y2], 'green', 2)
+const drawLine = (ctx, begin, end, stroke = 'black', width = 1) => {
+  if (stroke) {
+    ctx.strokeStyle = stroke;
+  }
+
+  if (width) {
+    ctx.lineWidth = width;
+  }
+
+  ctx.beginPath();
+  ctx.moveTo(...begin);
+  ctx.lineTo(...end);
+  ctx.stroke();
+}
+
+window.addEventListener("mousedown", onmousedown); // call `onmousedown` when the mouse is clicked
+window.addEventListener("keydown", onkeydown);  // call `onkeydown` when a key is pressed
+
+setInterval(draw, 100);  // call `drawCanvas` every 100 ms
+
+
+  </script>
+</head>
+<body>
+  <canvas id="canvas" width="800" height="600"></canvas>
+  <p>Check MDN for
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Basic_usage">
+      basic usage of canvas</a>.
+  </p>
+  <p id="info">press a key or click a mouse button</p>
+</body>
+</html>
