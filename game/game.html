@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>Canvas Example</title>
+  <title>Best Ping Pong Game</title>
   <script type="text/javascript">
 //import Math
 
@@ -71,26 +71,11 @@ const draw = () => {
     // left dash
   ctx.fillStyle = dash_right.background;
   ctx.fillRect(dash_right.x, dash_right.y, dash_right.width, dash_right.height);
-/*
-  // green square without fill color
-  ctx.beginPath();
-  ctx.lineWidth = 2;
-  ctx.strokeStyle = square.color;
-  ctx.rect(square.x, square.y, square.width, square.height);
-  ctx.stroke()
-
-  drawLine( ctx, [100, 100], [100, 200], '#eee', 10);
-  drawLine( ctx, [700, 140], [700, 240], '#eee', 10);
-*/
 
   // move squares
   ball.x = ball.x + ball.dx;
   ball.y = ball.y + (Math.round(Math.random()) * 2 - 1) * ball.dy;
-/*
-  if ( ball.x >= 700-ball.width || ball.x <= 100+ball.width ) {
-    ball.dx = -ball.dx;
-  }
-*/
+
   if (
   ball.x + ball.dx <= dash_left.x+dash_left.width &&
   //ball.x + ball.dx > dash_left.x + dash_left.width &&
